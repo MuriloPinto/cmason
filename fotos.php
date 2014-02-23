@@ -58,7 +58,7 @@ $query_portfolio = mysql_query("SELECT * FROM fotos ORDER BY nr_ordem ASC");
 ?>
 
 <tr id="page_<?echo $dados_portfolio['id_foto'];?>">
-	<td><img src="../fotos/thumbs/<?echo $dados_portfolio['nome_arquivo'];?>" width="50" height="50"/></td>
+	<td><img src="../fotos/thumbs/<?echo $dados_portfolio['nome_arquivo'];?>"/></td>
 	<td><?echo $dados_portfolio['descricao_arquivo'];?></td>
 	
 	<td align="center"><!--<a href="index.php?pagina=forms/form_foto&titulo=Editar&id_foto=<?echo $dados_portfolio['id_foto'];?>"><img src="img/page_white_edit.png" border="0" alt="Excluir" title="Editar"></a>-->

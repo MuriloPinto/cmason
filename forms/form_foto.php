@@ -64,6 +64,7 @@ global $legenda_inc, $tipo_arquivo;
                     // cria o thumbnail da imagem:
                     $caminho_img = "../fotos/";
 					$caminho_thumb = "../fotos/thumbs/";
+					$caminho_expandida = "../fotos/expandida/";
                     $arquivo_tumb =  $nome;
 
                     if ($_POST['tipo_arquivo'][$i] == "foto")
@@ -77,20 +78,23 @@ global $legenda_inc, $tipo_arquivo;
                         	if($wi > $he){
                                		$thumbnail= CreateThumb($caminho, $arquivo_tumb, 430, $caminho_img);
 									$thumbnail= CreateThumb($caminho, $arquivo_tumb, 138, $caminho_thumb);
+									$thumbnail= CreateThumb($caminho, $arquivo_tumb, 600, $caminho_expandida);
                          }
 						 
 
 							if($he > $wi){
                         		
 								$thumbnail= CreateThumbA($caminho, $arquivo_tumb, 300, $caminho_img);
-								$thumbnail= CreateThumbA($caminho, $arquivo_tumb, 90, $caminho_thumb);
+								$thumbnail= CreateThumbA($caminho, $arquivo_tumb, 150, $caminho_thumb);
+								$thumbnail= CreateThumb($caminho, $arquivo_tumb, 400, $caminho_expandida);
 							}
 							
 												
 
                           if($he == $wi){
                         		$thumbnail= CreateThumbA($caminho, $arquivo_tumb, 300, $caminho_img);
-								$thumbnail= CreateThumbA($caminho, $arquivo_tumb, 90, $caminho_thumb);
+								$thumbnail= CreateThumbA($caminho, $arquivo_tumb, 150, $caminho_thumb);
+								$thumbnail= CreateThumb($caminho, $arquivo_tumb, 400, $caminho_expandida);
 							}
                     }
 
