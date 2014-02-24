@@ -50,7 +50,7 @@ color: #EFEFEF;
 font-size: 9px;
 letter-spacing: 1px;
 background-color:#757575;
-text-align: left;
+text-align: left;text-transform: uppercase;
 }
 #cmstbl td{
 border-bottom: 1px solid #BCBCBC;

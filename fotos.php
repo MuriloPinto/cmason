@@ -12,6 +12,9 @@ $foto = $_GET['id_foto'];
 			
 			$nm_arquivo = "../fotos/thumbs/" . $row['nome_arquivo'];
 			unlink($nm_arquivo);
+			
+			$nm_arquivo = "../fotos/expandida/" . $row['nome_arquivo'];
+			unlink($nm_arquivo);
 		
     }
 	$query = mysql_query("DELETE FROM fotos WHERE id_foto = {$foto}");
