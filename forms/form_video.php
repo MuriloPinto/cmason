@@ -28,18 +28,17 @@ $url_img = $video[0]["thumbnail_large"];
 }else if($canal == "youtube"){
 $url_img = "http://i1.ytimg.com/vi/" . $cod ."/0.jpg";
 }
-$query = "INSERT INTO videos (
+$query = "INSERT INTO videos (
 					 cod_video,
 					 canal_video,
 					 titulo_video,
-					 img_video
-             )VALUES(
+					 img_video
+             )VALUES(
 					 '{$_POST['cod_video']}',
 					 '{$_POST['canal']}',
 					 '{$_POST['tlt_video']}',
 					 '{$url_img}'
-                     )
-";
+                     )";
 if(!mysql_query($query,$conexao)){?>
 <div id="cmsalerta"><img src="img/error.png" class="img-error" />
 Não foi possível cadastrar o video desejado. <br />
