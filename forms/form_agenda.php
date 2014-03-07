@@ -5,9 +5,8 @@ if($_GET['titulo'] == "Editar"){
    
    $dt_evento = mysql_result($query, 0, "dt_evento");
    $cidade = mysql_result($query, 0, "cidade_evento");
-   $titulo = mysql_result($query, 0, "titulo_evento");
    $local = mysql_result($query, 0, "local_evento");
-   $banner = mysql_result($query, 0, "imagem_evento");
+   
 }
 
 if($_POST['action'] == "Editar"){
@@ -47,38 +46,27 @@ if($_POST['action'] == "Cadastrar"){
 
 	$cod_html = array("<div>","</div>","&lt;/div&gt;", "&lt;div&gt;");
 
-	//Campos com textos
-	$dt_evento = str_replace($cod_html, "", addslashes($_POST['dt_evento']));
+	//Campos com textos	
+	$local = str_replace($cod_html, "", addslashes($_POST['local_evento']));
 	$cidade = str_replace($cod_html, "", addslashes($_POST['cidade_evento']));
-	$titulo = str_replace($cod_html, "", addslashes($_POST['titulo']));
-	$local = str_replace($cod_html, "", addslashes($_POST['local']));
-	
 	
 	$query = "INSERT INTO agenda (
-                     dt_evento,
-					 cidade_evento,
-					 titulo_evento,
+                     dia_evento,
+					 mes_evento,
 					 local_evento,
-					 imagem_evento
+					 cidade_evento,
+					 horario_evento
              )VALUES(
-					 '$dt_evento',
-					 '$cidade',
-					 '$titulo',
-					 '$local',
-					 '{$_FILES['logo']['name']}'
-                     )";
+					 '{$_POST['dia_evento']}',
+					 '{$_POST['mes_evento']}',
+					 '{$local}',
+					 '{$cidade}',
+					 '{$_POST['horario_evento']}'
+					 )";
 if(!mysql_query($query,$conexao)){
 echo "Não foi possível cadastrar o evento desejado.";
 echo mysql_error();
 }else{
-$id_evento = mysql_insert_id();
-
-$uploaddir = "../agenda/banners/"; 
-$uploadfile = $uploaddir . $id_evento ."_". basename($_FILES['logo']['name']); 
-$error = $_FILES['logo']['error']; 
-$subido = false; 
-if($error==UPLOAD_ERR_OK) { $subido = copy($_FILES['logo']['tmp_name'], $uploadfile); } 
-//if($subido) { echo "El archivo subio con exito"; } else { echo "Se ha producido un error: ".$error; }
 ?>
 <div id="action">
 	<img src="img/ok.png" border="0" alt="Ok!" title="Ok!"><br /> <br />
@@ -103,8 +91,67 @@ exit;
     <tbody>
 	<tr>
         <td>
-           <font color="red">*</font><label>Data do evento:</label><br />
-           <input type="text" name="dt_evento" id="dt_evento" value="<?echo $dt_evento?>" class="cmscampos">
+           <font color="red">*</font><label>Dia do evento:</label><br />
+			<select name="dia_evento" class="cmscampos">
+				<option value="01">01</option>
+				<option value="02">02</option>
+				<option value="03">03</option>
+				<option value="04">04</option>
+				<option value="05">05</option>
+				<option value="06">06</option>
+				<option value="07">07</option>
+				<option value="08">08</option>
+				<option value="09">09</option>
+				<option value="10">10</option>
+				<option value="11">11</option>
+				<option value="12">12</option>
+				<option value="13">13</option>
+				<option value="14">14</option>
+				<option value="15">15</option>
+				<option value="16">16</option>
+				<option value="17">17</option>
+				<option value="18">18</option>
+				<option value="19">19</option>
+				<option value="20">20</option>
+				<option value="21">21</option>
+				<option value="22">22</option>
+				<option value="23">23</option>
+				<option value="24">24</option>
+				<option value="25">25</option>
+				<option value="26">26</option>
+				<option value="27">27</option>
+				<option value="28">28</option>
+				<option value="29">29</option>
+				<option value="30">30</option>
+				<option value="31">31</option>
+		   </select>
+        </td>
+    </tr>
+	
+	<tr>
+        <td>
+           <font color="red">*</font><label>Mês do evento:</label><br />
+			   <select name="mes_evento" class="cmscampos">
+					<option value="JANEIRO">JANEIRO</option>
+					<option value="FEVEREIRO">FEVEREIRO</option>
+					<option value="MARÇO">MARÇO</option>
+					<option value="ABRIL">ABRIL</option>
+					<option value="MAIO">MAIO</option>
+					<option value="JUNHO">JUNHO</option>
+					<option value="JULHO">JULHO</option>
+					<option value="AGOSTO">AGOSTO</option>
+					<option value="SETEMBRO">SETEMBRO</option>
+					<option value="OUTUBRO">OUTUBRO</option>
+					<option value="NOVEMBRO">NOVEMBRO</option>
+					<option value="DEZEMBRO">DEZEMBRO</option>
+			   </select>
+        </td>
+    </tr>
+	
+	<tr>
+        <td>
+           <font color="red">*</font><label>Local:</label><br />
+           <input type="text" name="local_evento" id="local" value="<?echo $local?>" class="cmscampos">
         </td>
     </tr>
 	
@@ -117,31 +164,11 @@ exit;
 	
 	<tr>
         <td>
-           <font color="red">*</font><label>Titulo:</label><br />
-           <input type="text" name="titulo" id="titulo" value="<?echo $titulo?>" class="cmscampos">
+           <font color="red">*</font><label>Horário:</label><br />
+           <input type="text" name="horario_evento" id="horario" value="<?echo $cidade?>" class="cmscampos">
         </td>
     </tr>
-	
-	<tr>
-        <td>
-           <font color="red">*</font><label>Local:</label><br />
-           <input type="text" name="local" id="local" value="<?echo $local?>" class="cmscampos">
-        </td>
-    </tr>
-	
-	<tr>
-        <td colspan="3">
-           <font color="red">*</font><label>Foto:</label><br />
-		   <?
-			if($_GET['titulo'] == "Editar"){
-			?>
-			<iframe id="frame_imgs" src="forms/imagem_evento.php?id_evento=<?echo $_GET['id_evento'];?>" frameborder="0" width="100%" height="350px" style="margin-top: 5px;"></iframe>
-			<?}else{?>
-           <input type="file" name="logo" id="logo" class="cmscampos" accept="image/*"> <img id="dica_foto_bio" src="img/information.png" title="Somente imagens .jpg e .png, com altura de 82px e largura 84px." style="vertical-align: middle;">
-		   <?}?>
-        </td>
-    </tr>
-	
+		
 	</tbody>
 	
 	<tfoot>

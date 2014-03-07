@@ -1,17 +1,6 @@
-<?
+<?php
 if($_GET['action'] == "delete"){
 $evento = $_GET['id_evento'];
- $query = "SELECT * FROM agenda
-                 WHERE id_evento = {$evento}";
-    $result = mysql_query($query);
-
-    // percorre e apaga arquivos da pasta
-    while ($row = mysql_fetch_assoc($result))
-    {
-			$nm_arquivo = "../agenda/banners/" . $row['id_evento']."_".$row['imagem_evento'];
-			unlink($nm_arquivo);
-		
-    }
 	$query2 = mysql_query("DELETE FROM agenda WHERE id_evento = {$evento}");
 	
 	if(!mysql_query($query2,$conexao)){
@@ -41,18 +30,18 @@ exit;
 <table id="cmstbl" cellspacing="0" cellpadding="10">
 	<thead>
 		<tr>
-			<th width="100px">DATA</th>
-			<th>CIDADE</th>
-			<th>EVENTO</th>
+			<th width="25">DIA</th>
+			<th>MÊS</th>
 			<th>LOCAL</th>
-			<th>IMAGEM</th>
+			<th>CIDADE</th>
+			<th>HORÁRIO</TH>
 			<th width="50"></th>
 		</tr>
 	<thead>
 
 <?
 
-$query_portfolio = mysql_query("SELECT * FROM agenda ORDER BY dt_evento");
+$query_portfolio = mysql_query("SELECT * FROM agenda ORDER BY id_evento");
 
 		while($dados_portfolio = mysql_fetch_array($query_portfolio)) {
 ?>
@@ -60,15 +49,15 @@ $query_portfolio = mysql_query("SELECT * FROM agenda ORDER BY dt_evento");
 <tr>
 	<!--<td><? $date_s = strtotime($dados_users['dt_evento']);
 echo $date = date("d/m/Y", $date_s);?></td>-->
-	<td><?echo $dados_portfolio['dt_evento'];?></td>
-	<td><?echo $dados_portfolio['cidade_evento'];?></td>
-	<td><?echo $dados_portfolio['titulo_evento'];?></td>
+	<td><?echo $dados_portfolio['dia_evento'];?></td>
+	<td><?echo $dados_portfolio['mes_evento'];?></td>
 	<td><?echo $dados_portfolio['local_evento'];?></td>
-	<td><img src="../agenda/banners/<?echo $dados_portfolio['id_evento'] . "_" . $dados_portfolio['imagem_evento'];?>" width="200" height="50"/></td>	
+	<td><?echo $dados_portfolio['cidade_evento'];?></td>
+	<td><?echo $dados_portfolio['horario_evento'];?></td>	
 	<td align="center">
-	<a href="index.php?pagina=forms/form_agenda&titulo=Editar&id_evento=<?echo $dados_portfolio['id_evento'];?>"><img src="img/page_white_edit.png" border="0" alt="Excluir" title="Editar"></a>
+	<!--<a href="index.php?pagina=forms/form_agenda&titulo=Editar&id_evento=<?echo $dados_portfolio['id_evento'];?>"><img src="img/page_white_edit.png" border="0" alt="Excluir" title="Editar"></a>-->
 	
-	<a onclick="confirmAcao('Você realmente deseja excluir o evento: <b><?echo $dados_portfolio['titulo_evento'];?></b>?','index.php?pagina=agenda&action=delete&id_evento=<?echo $dados_portfolio['id_evento'];?>');"><img src="img/delete.png" border="0" alt="Excluir" title="Excluir"></a>
+	<a onclick="confirmAcao('Você realmente deseja excluir o evento?','index.php?pagina=agenda&action=delete&id_evento=<?echo $dados_portfolio['id_evento'];?>');"><img src="img/delete.png" border="0" alt="Excluir" title="Excluir"></a>
 	</td>
 </tr>
 <?}?>
