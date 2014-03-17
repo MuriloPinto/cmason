@@ -1,9 +1,4 @@
 <?
-if(isset($_POST['action']) == "Cadastrar"){
-
-$canal = $_POST['canal'];
-$cod = $_POST['cod_video'];
-
 function getPage($url, $referer='', $timeout=30, $header=''){
 		if ($referer=='') $referer='http://'.$_SERVER['HTTP_HOST'];
 		if(!isset($timeout)) $timeout=30;
@@ -21,24 +16,82 @@ function getPage($url, $referer='', $timeout=30, $header=''){
 		curl_close ($curl);
 		return $html;
     }
+	
+if(isset($_GET['titulo']) == "Editar"){
+	$query = mysql_query("SELECT * FROM videos WHERE id_video = {$_GET['id_video']}");
+   
+   $cod_video = mysql_result($query, 0, "cod_video");
+   $canal = mysql_result($query, 0, "canal_video");
+   $titulo = mysql_result($query, 0, "titulo_video");
+}
+
+if($_POST['action'] == "Editar"){
+$canal = $_POST['canal'];
+$cod = $_POST['cod_video'];
 
 if($canal == "vimeo"){
 $video = unserialize(getPage("http://vimeo.com/api/v2/video/$cod.php"));
 $url_img = $video[0]["thumbnail_large"];
 }else if($canal == "youtube"){
 $url_img = "http://i1.ytimg.com/vi/" . $cod ."/0.jpg";
-}
-$query = "INSERT INTO videos (
+}
+
+$cod_html = array("<div>","</div>","&lt;/div&gt;", "&lt;div&gt;");
+
+//Campos com textos
+$titulo = str_replace($cod_html, "", addslashes($_POST['tlt_video']));
+
+   $query= "UPDATE videos
+        SET  cod_video = '{$_POST['cod_video']}',
+			 canal_video = '{$_POST['canal']}',
+			 titulo_video = '{$titulo}',
+			img_video = '{$url_img}'
+		WHERE id_video = {$_POST['id_video']}";
+
+if(!mysql_query($query,$conexao)){
+echo "Não foi possível editar o vídeo desejado.";
+echo mysql_error();
+}else{		
+?>
+<div id="action">
+	<img src="img/ok.png" border="0" alt="Ok!" title="Ok!"><br /> <br />
+	<span>Vídeo atualizado com sucesso!</span><br /><br />
+	<input type="button" class="cmsbutton" value="Ok!" onClick="location.href='index.php?pagina=videos';">
+</div>
+
+<?
+exit;
+}
+}
+
+if(isset($_POST['action']) == "Cadastrar"){
+
+$canal = $_POST['canal'];
+$cod = $_POST['cod_video'];
+
+if($canal == "vimeo"){
+$video = unserialize(getPage("http://vimeo.com/api/v2/video/$cod.php"));
+$url_img = $video[0]["thumbnail_large"];
+}else if($canal == "youtube"){
+$url_img = "http://i1.ytimg.com/vi/" . $cod ."/0.jpg";
+}
+
+$cod_html = array("<div>","</div>","&lt;/div&gt;", "&lt;div&gt;");
+
+//Campos com textos
+$titulo = str_replace($cod_html, "", addslashes($_POST['tlt_video']));
+$query = "INSERT INTO videos (
 					 cod_video,
 					 canal_video,
 					 titulo_video,
-					 img_video
-             )VALUES(
+					 img_video
+             )VALUES(
 					 '{$_POST['cod_video']}',
 					 '{$_POST['canal']}',
-					 '{$_POST['tlt_video']}',
+					 '{$titulo}',
 					 '{$url_img}'
-                     )";
+                     )
+";
 if(!mysql_query($query,$conexao)){?>
 <div id="cmsalerta"><img src="img/error.png" class="img-error" />
 Não foi possível cadastrar o video desejado. <br />
@@ -77,10 +130,10 @@ exit;
 
 		
 
-           <font color="red">*</font><label>Canal:</label><br />		   
+           <font color="red">*</font><label>Tipo:</label><br />		   
 
-           <input type="radio" name="canal" id="canal" value="youtube" class="cmscampos"> Youtube
-		   <input type="radio" name="canal" id="canal" value="vimeo" class="cmscampos"> Vimeo
+           <input type="radio" name="canal" id="canal" value="youtube" class="cmscampos" <?if($canal == "youtube"){echo "checked";}?>> Youtube
+		   <input type="radio" name="canal" id="canal" value="vimeo" class="cmscampos" <?if($canal == "vimeo"){echo "checked";}?>> Vimeo
 
 		   
 
@@ -96,7 +149,7 @@ exit;
 
            <font color="red">*</font><label>ID Video (Youtube ou Vimeo):</label><br />		   
 
-           <input type="text" name="cod_video" id="cod_video" class="cmscampos">		   
+           <input type="text" name="cod_video" id="cod_video" class="cmscampos" value="<?echo $cod_video?>">		   
 
         </td>
 
@@ -111,7 +164,7 @@ exit;
 
            <font color="red">*</font><label>Título vídeo:</label><br />		   
 
-           <input type="text" name="tlt_video" id="tlt_video" class="cmscampos">		   
+           <input type="text" name="tlt_video" id="tlt_video" class="cmscampos" value="<?echo $titulo;?>" size="100">		   
 
         </td>
 
@@ -120,7 +173,8 @@ exit;
 	
 	<tfoot>
 	<tr class="cmstbl-tr-last">
-		<td colspan="5">
+		<td colspan="5">
+			<input type="hidden" name="id_video" id="id_video" value="<?echo $_GET['id_video'];?>">
 			<input type="hidden" name="action" id="action" value="<?echo $_GET['titulo'];?>">
 			<input type="submit" class="cmsbutton" value="<?echo $_GET['titulo'];?>">
 			

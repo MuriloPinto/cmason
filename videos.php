@@ -48,9 +48,9 @@ $query_portfolio = mysql_query("SELECT * FROM videos ORDER BY id_video DESC");
 	<td><img src="<?echo $dados_portfolio['img_video'];?>" height="100"/></td>
 	<td><?echo $dados_portfolio['titulo_video'];?></td>
 	
-	<td align="center"><!--<a href="index.php?pagina=forms/form_foto&titulo=Editar&id_foto=<?echo $dados_portfolio['id_foto'];?>"><img src="img/page_white_edit.png" border="0" alt="Excluir" title="Editar"></a>-->
-	
-	<a onclick="confirmAcao('Você realmente deseja excluir o vídeo selecionado?','index.php?pagina=videos&action=delete&id_video=<?echo $dados_portfolio['id_video'];?>');"><img src="img/delete.png" border="0" alt="Excluir" title="Excluir"></a>
+	<td align="center">
+		<a href="index.php?pagina=forms/form_video&titulo=Editar&id_video=<?echo $dados_portfolio['id_video'];?>"><img src="img/page_white_edit.png" border="0" alt="Editar" title="Editar"></a>
+		<a onclick="confirmAcao('Você realmente deseja excluir o vídeo selecionado?','index.php?pagina=videos&action=delete&id_video=<?echo $dados_portfolio['id_video'];?>');"><img src="img/delete.png" border="0" alt="Excluir" title="Excluir"></a>
 	</td>
 </tr>
 <?}?>

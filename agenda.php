@@ -55,9 +55,8 @@ echo $date = date("d/m/Y", $date_s);?></td>-->
 	<td><?echo $dados_portfolio['cidade_evento'];?></td>
 	<td><?echo $dados_portfolio['horario_evento'];?></td>	
 	<td align="center">
-	<!--<a href="index.php?pagina=forms/form_agenda&titulo=Editar&id_evento=<?echo $dados_portfolio['id_evento'];?>"><img src="img/page_white_edit.png" border="0" alt="Excluir" title="Editar"></a>-->
-	
-	<a onclick="confirmAcao('Você realmente deseja excluir o evento?','index.php?pagina=agenda&action=delete&id_evento=<?echo $dados_portfolio['id_evento'];?>');"><img src="img/delete.png" border="0" alt="Excluir" title="Excluir"></a>
+		<a href="index.php?pagina=forms/form_agenda&titulo=Editar&id_evento=<?echo $dados_portfolio['id_evento'];?>"><img src="img/page_white_edit.png" border="0" alt="Editar" title="Editar"></a>	
+		<a onclick="confirmAcao('Você realmente deseja excluir o evento?','index.php?pagina=agenda&action=delete&id_evento=<?echo $dados_portfolio['id_evento'];?>');"><img src="img/delete.png" border="0" alt="Excluir" title="Excluir"></a>
 	</td>
 </tr>
 <?}?>

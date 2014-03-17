@@ -7,13 +7,13 @@ $foto = $_GET['id_foto'];
     // percorre e apaga arquivos da pasta
     while ($row = mysql_fetch_assoc($result))
     {
-			$nm_arquivo = "../fotos/" . $row['nome_arquivo'];
+			$nm_arquivo = "../fotos/" . $row['id_foto']."_".$row['nome_arquivo'];
 			unlink($nm_arquivo);
 			
-			$nm_arquivo = "../fotos/thumbs/" . $row['nome_arquivo'];
+			$nm_arquivo = "../fotos/thumbs/" . $row['id_foto']."_".$row['nome_arquivo'];
 			unlink($nm_arquivo);
 			
-			$nm_arquivo = "../fotos/expandida/" . $row['nome_arquivo'];
+			$nm_arquivo = "../fotos/expandida/" . $row['id_foto']."_".$row['nome_arquivo'];
 			unlink($nm_arquivo);
 		
     }
@@ -61,7 +61,7 @@ $query_portfolio = mysql_query("SELECT * FROM fotos ORDER BY nr_ordem ASC");
 ?>
 
 <tr id="page_<?echo $dados_portfolio['id_foto'];?>">
-	<td><img src="../fotos/thumbs/<?echo $dados_portfolio['nome_arquivo'];?>"/></td>
+	<td><img src="../fotos/thumbs/<?echo $dados_portfolio['id_foto']."_".$dados_portfolio['nome_arquivo'];?>"/></td>
 	<td><?echo $dados_portfolio['descricao_arquivo'];?></td>
 	
 	<td align="center"><!--<a href="index.php?pagina=forms/form_foto&titulo=Editar&id_foto=<?echo $dados_portfolio['id_foto'];?>"><img src="img/page_white_edit.png" border="0" alt="Excluir" title="Editar"></a>-->

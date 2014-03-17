@@ -30,8 +30,12 @@ global $legenda_inc, $tipo_arquivo;
 
         if (($tamanho > 0) && (strlen($nome) > 1))
            {
+		   
+				$result = mysql_query("SHOW TABLE STATUS LIKE 'fotos'");
+$row = mysql_fetch_array($result);
+$nextId = $row['Auto_increment'];  
 
-               $caminho = "../fotos/" . $nome;
+               $caminho = "../fotos/" . $nextId."_".$nome;
 			   		   
 	
                if ( move_uploaded_file($tmp_name, $caminho) )
@@ -65,7 +69,7 @@ global $legenda_inc, $tipo_arquivo;
                     $caminho_img = "../fotos/";
 					$caminho_thumb = "../fotos/thumbs/";
 					$caminho_expandida = "../fotos/expandida/";
-                    $arquivo_tumb =  $nome;
+                    $arquivo_tumb =  mysql_insert_id() ."_". $nome;
 
                     if ($_POST['tipo_arquivo'][$i] == "foto")
                     {
@@ -76,26 +80,22 @@ global $legenda_inc, $tipo_arquivo;
 
 						 
                         	if($wi > $he){
-                               		$thumbnail= CreateThumb($caminho, $arquivo_tumb, 430, $caminho_img);
-									$thumbnail= CreateThumb($caminho, $arquivo_tumb, 138, $caminho_thumb);
-									$thumbnail= CreateThumb($caminho, $arquivo_tumb, 600, $caminho_expandida);
-                         }
-						 
+								$thumbnail= CreateThumb($caminho, $arquivo_tumb, 600, $caminho_expandida);
+								$thumbnail= CreateThumb($caminho, $arquivo_tumb, 138, $caminho_thumb);	
+								$thumbnail= CreateThumb($caminho, $arquivo_tumb, 430, $caminho_img);
+							}						 
 
 							if($he > $wi){
-                        		
+                        		$thumbnail= CreateThumbA($caminho, $arquivo_tumb, 600, $caminho_expandida);
+								$thumbnail= CreateThumbA($caminho, $arquivo_tumb, 160, $caminho_thumb);								
 								$thumbnail= CreateThumbA($caminho, $arquivo_tumb, 300, $caminho_img);
-								$thumbnail= CreateThumbA($caminho, $arquivo_tumb, 150, $caminho_thumb);
-								$thumbnail= CreateThumb($caminho, $arquivo_tumb, 400, $caminho_expandida);
-							}
+							}							
 							
-												
-
-                          if($he == $wi){
-                        		$thumbnail= CreateThumbA($caminho, $arquivo_tumb, 300, $caminho_img);
-								$thumbnail= CreateThumbA($caminho, $arquivo_tumb, 150, $caminho_thumb);
-								$thumbnail= CreateThumb($caminho, $arquivo_tumb, 400, $caminho_expandida);
-							}
+							if($he == $wi){
+								$thumbnail= CreateThumbA($caminho, $arquivo_tumb, 600, $caminho_expandida);
+								$thumbnail= CreateThumbA($caminho, $arquivo_tumb, 160, $caminho_thumb);
+								$thumbnail= CreateThumbA($caminho, $arquivo_tumb, 300, $caminho_img);
+                        	}
                     }
 
 
@@ -112,8 +112,6 @@ global $legenda_inc, $tipo_arquivo;
 
 
 if(isset($_POST['action']) == "Cadastrar"){
-
-
 upload();
 ?>
 <div id="action">
@@ -123,39 +121,6 @@ upload();
 </div>
 <?
 exit;
-
-/*$data = date('Y-m-d');
-$descricao = addslashes($_POST['descricao_arquivo']);
-
-$query = "INSERT INTO fotos (
-					 nome_arquivo,
-					 descricao_arquivo
-             )VALUES(
-                     '{$_FILES['logo']['name']}',
-					 '{$_POST[descricao_arquivo]}'
-                     )
-";
-if(!mysql_query($query,$conexao)){
-echo "Não foi possível cadastrar a foto desejada.";
-echo mysql_error();
-}else{
-$id_cliente = mysql_insert_id();
-
-$uploaddir = "../fotos/"; 
-$uploadfile = $uploaddir . $id_cliente ."_". basename($_FILES['logo']['name']); 
-$error = $_FILES['logo']['error']; 
-$subido = false; 
-if($error==UPLOAD_ERR_OK) { $subido = copy($_FILES['logo']['tmp_name'], $uploadfile); } 
-//if($subido) { echo "El archivo subio con exito"; } else { echo "Se ha producido un error: ".$error; }
-?>
-<div id="action">
-	<img src="img/ok.png" border="0" alt="Ok!" title="Ok!"><br /> <br />
-	<span>Foto cadastrada com sucesso!</span><br /><br />
-	<input type="button" class="cmsbutton" value="Ok!" onClick="location.href='index.php?pagina=fotos';">
-</div>
-<?
-exit;
-}*/
 }
 ?>
 
@@ -171,7 +136,7 @@ exit;
 	
 	<tr>
         <td colspan="3">
-           <font color="red">*</font><label>Foto:</label><br />
+           <font color="red">*</font><label>Foto: (Peso máximo por imagem 3MB)</label><br />
 		  <table id="myTable_foto" cellpadding="0" cellspacing="0">
                     <tr>
                         <td><input type="file" id="foto" name="foto[]"  style="width:310px;" accept="image/*" class="campo_form" multiple /></td>

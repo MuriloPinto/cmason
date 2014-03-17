@@ -22,7 +22,7 @@ session_start();
 
 
 <script type="text/javascript">
- $().ready(function() {  
+ $().ready(function() {$("#cmstbl.fotos-home tbody.content").sortable({    update: function(event, ui) {        $.ajax({			url: "ordena_fotos.php",			data: { pages: $('#cmstbl.fotos-home tbody.content').sortable('serialize') },			type: 'get',			success: function(xhr, ret){						}		});    }}); 
    $('#add').click(function() {  
     return !$('#select1 option:selected').remove().appendTo('#select2');  
    });  
@@ -234,7 +234,7 @@ return false;
 	 <?if(isset($_SESSION['nome'])){?>
          <ul class="nav">		 
              <li><a id="dica_home" title="Página Inicial" href="index.php?pagina=principal"><img src="img/house.png" border="0" alt="" title=""></a></li>
-			 <?if($_SESSION['conta'] == "adm"){?>
+			 <?if($_SESSION['conta'] == "adm"){?>				 <li><a href="index.php?pagina=contato">Contato</a></li>				
 				 <li><a href="index.php?pagina=agenda">Agenda</a></li>				 				 <li><a href="index.php?pagina=fotos">Fotos</a></li>
 				 <li><a href="index.php?pagina=videos">Vídeos</a></li>
 				 <li><a href="index.php?pagina=presskit">Presskit</a></li>
@@ -269,12 +269,11 @@ return false;
 <? 
 if(!isset($_SESSION['nome'])){?>
 <div style="min-height: 100%; min-width: 100%; position: relative;">
-<div style="border: 1px solid black; margin: 0 auto; min-height: 100%; width:1000px; overflow: hidden;">
-<img src="http://www.pyrafilmes.com/img/loguinho.png" height="70" style="float: left;">
-<div>
+<div style="margin-top: 30px!important; margin: 0 auto; min-height: 100%; width:1000px; overflow: hidden;">
+<div style="text-align: center;">
 <form action="login.php" method="post">
-Login: <input type="text" name="login">
-Senha: <input type="password" name="senha">
+Login: <input type="text" name="login"><br />
+Senha: <input type="password" name="senha"><br />
 <input type="submit" value="entrar">
 </form>
 </div>
